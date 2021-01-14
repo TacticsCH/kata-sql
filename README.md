@@ -1,33 +1,37 @@
 # EPFL Dojo - Requêtes SQL
+
 Le but est d'avoir un exercice permettant de pratiquer des requêtes SQL sur des
 tables pré-définies.
 
 ## Concept
+
 Vous êtes responsable de la communication de la discothèque "HelloDojo" qui
 ouvrira prochainement ses portes. Vous avez récupéré des listes de personnes au
 format SQL et dans le but d'exercer vos talents de marketing, vous avez besoin
 d'en extraire des informations pertinantes.
 
-Afin que d'autres personnes puissent faire de même, __vous devez noter toutes
-les étapes dans le fichier [HowTo.md](HowTo.md)__. Dans un monde idéal, vous
-avez __cloné le dépôt__ et ainsi vous pourrez également voir les démarches
+Afin que d'autres personnes puissent faire de même, **vous devez noter toutes
+les étapes dans le fichier [HowTo.md](HowTo.md)**. Dans un monde idéal, vous
+avez **cloné le dépôt** et ainsi vous pourrez également voir les démarches
 effectuées par vos collègues et en profiter !
 
 La documentation officielle de MySQL se trouve
 [ici](https://dev.mysql.com/doc/refman/8.0/en/) et la page de
-[StackOverflow](https://stackoverflow.com/tags/mysql/info) peut également sérvir.
+[StackOverflow](https://stackoverflow.com/tags/mysql/info) peut également servir.
 
 # Etapes
 
 ## Mise en place
-Tout d'abord, vous devez vous débrouiller pour __importer les données__ dans un
+
+Tout d'abord, vous devez vous débrouiller pour **importer les données** dans un
 système de gestion de base de données (SGBD) tel que mysql. Toutes les options
-vous sont ouvertes. Vous créez également un [schema.jpg](schema.png) de votre
+vous sont ouvertes. Vous créez également un [schema.jpg](schema.jpg) de votre
 base de donnée.
 
 ## Informations à récolter
 
 ### Générales
+
 1. Pour commencer, vous désirez connaître le nombre de personnes que vous avez
    dans votre base de données (`people`).
 1. Il y a-t-il des doublons ?
@@ -50,18 +54,20 @@ base de donnée.
    qui ont, mis ensemble, la pair nom + prénom la plus longue.
 
 ### Invitations
+
 1. Pour l'ouverture, vous désirez lister tous les membres de plus de 18 ans,
-    * et de moins de 60 ans,
-    * qui ont une addresse email valide.
-1. Pour faciliter la lecture vous ajoutez une colonne `age` dans le résultat 
+   - et de moins de 60 ans,
+   - qui ont une addresse email valide.
+1. Pour faciliter la lecture vous ajoutez une colonne `age` dans le résultat
    de votre requête.
 1. Avec ces membres, vous désirez faire une liste sous le format suivant
    `Prénom Nom <email@provider.com>;` afin de pouvoir la copier/coller dans
    votre client email.
-1. Avec les informations contenues dans la table `people` (sans jointures), 
+1. Avec les informations contenues dans la table `people` (sans jointures),
    pourrait-on approximer le nombre de personnes habitant en Suisse ?
 
 ### Countries
+
 1. Pour un futur formulaire d'inscription sur un site Internet, vous voulez
    pré-macher votre travail en préparant les données des pays pour les options
    d'un `<select>`. Préparer la requête qui permet d'obtenir la liste d'options
@@ -70,10 +76,11 @@ base de donnée.
    en anglais lorsque le site sera traduit ?
 
 ### Jointure
+
 1. En utilisant la table de jointure `countries_people.sql`, lister les
    personnes habitant en Suisse.
 1. De la même manière, lister les personnes qui n'habitent pas en Suisse.
-1. Comment lister les personnes (nom et prénom) qui habitent dans les pays 
+1. Comment lister les personnes (nom et prénom) qui habitent dans les pays
    limitrophe de la Suisse ? (i.e France, Allemagne, Italie, Autriche, Lischenchtein)
 1. Vous souhaitez savoir combien il y a de personnes par pays, afin de savoir si
    votre table people a suffisament de personnes en suisse et combien de
@@ -84,6 +91,7 @@ base de donnée.
 1. Comment pourrait-on afficher le pourcentages de personnes par pays ?
 
 ### Procédures
+
 1. Vous avez remarqué que la table `countries.sql` contient une colonne `tld`.
    Trouvez un moyen d'afficher le nom du pays en anglais en fonction du `tld` de
    l'adresse email de la personne.
@@ -93,14 +101,16 @@ base de donnée.
    `tld` des addresses emails ?
 
 ### Vue
+
 1. Pour faciliter vos futurs requêtes, vous créer une vue `HelloDojo` qui
    contient les colonnes suivantes:
-    * Toutes les informations de la table `people`;
-    * Une colonne `age`;
-    * Une colonne formatée avec `Prénom Nom` (i.c. majuscules);
-    * Une colonne avec le nom du pays en Français.
+   - Toutes les informations de la table `people`;
+   - Une colonne `age`;
+   - Une colonne formatée avec `Prénom Nom` (i.c. majuscules);
+   - Une colonne avec le nom du pays en Français.
 
 ### Finances
+
 1. En vue de l'ouverture, le directeur a déjà acheté des caisses enregistreuses.
    Vous savez également que des bons et les cartes de membres pourront-être
    achetés sur le site Internet. Modifiez la base de donnée existante en
