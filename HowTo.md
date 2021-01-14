@@ -31,7 +31,7 @@ WHERE EXISTS (
               AND   t1.lastname = t2.lastname
               AND   t1.email = t2.email
 			  AND   t1.birthdate = t2.birthdate
-			  AND   t1.idnumber = t2.idnumber )
+			  AND   t1.  = t2.idnumber )
 ```
 
 1. Cette requête permet de trouver les infos de la personne dont le nom de
@@ -66,43 +66,55 @@ WHERE EXISTS (
    `SELECT firstname FROM people WHERE LENGTH(firstname) = (SELECT max(LENGTH(firstname)) FROM people)`
 1. Le plus long nom de famille est `Christensen`, ma requête est:  
    `SELECT lastname FROM people WHERE LENGTH(lastname) = (SELECT max(LENGTH(lastname)) FROM people)`
-1. La plus longue paire nom + prénom est `TEXT`, ma requête est:  
-   `SELECT XXX FROM XXX`
+1. Les plus longues paires nom + prénom sont `Cheyenne Pennington, Wallace Christensen, Benedict Daugherty`, ma requête est:  
+   `SELECT firstname, lastname FROM people WHERE (LENGTH(lastname) + LENGTH(firstname)) = (SELECT MAX(LENGTH(firstname) + LENGTH(lastname)) FROM people)`
+   Double vérification :
+   `SELECT *, (LENGTH(lastname) + LENGTH(firstname)) AS total FROM people ORDER BY total DESC`
 
 ### Invitations
 
-1. Pour lister tous le membres de plus de 18 ans:  
-    `SELECT XXX FROM XXX`
-   a. et de moins de 60 ans:  
-    `SELECT XXX FROM XXX`
-   a. qui ont une addresse email valide:  
-    `SELECT XXX FROM XXX`
+1. Pour lister tous le membres de plus de 18 ans:
+
+```
+SELECT *, TIMESTAMPDIFF(YEAR, birthdate, NOW()) AS age FROM people
+WHERE TIMESTAMPDIFF(YEAR, birthdate, NOW())>18 AND TIMESTAMPDIFF(YEAR, birthdate, NOW())<60 AND (email REGEXP '[a-zA-Z0-9_\\-\\.\\+]+@([a-zA-Z0-9_\\-]+\\.)+([a-zA-Z0-9_\\-]+)')
+```
+
 1. Pour ajoutez une colonne `age` dans le résultat de la requête:  
-   `SELECT XXX FROM XXX`
+   `SELECT *, TIMESTAMPDIFF(YEAR, birthdate, NOW()) AS age FROM people`
 1. Pour générer une liste contenant `Prénom Nom <email@provider.com>;`:  
-   `SELECT XXX FROM XXX`
+   `SELECT *, CONCAT(firstname, lastname, ' <', email, '>') AS client_mail FROM people`
 1. Avec cette requête:  
-    `SELECT XXX FROM XXX`  
-   je peux estimer que `NUMBER` personnes habitent en Suisse.
+    `SELECT COUNT(*) FROM people WHERE email LIKE "%.ch"`  
+   je peux estimer que `70` personnes habitent en Suisse.
 
 ### Countries
 
 1. La requête qui permet d'obtenir la liste d'options
    sous la forme: `<option value="XXX">XXX</option>` est:  
-   `SELECT XXX FROM XXX`
-1. Pour avoir la liste d'options en plusieurs langues, je procède de la manière suivante:  
-   `STRING`
+   `SELECT CONCAT('<option value="', iso2, '">', name_en, '</option>') AS select_html FROM countries / '<option value="', iso3, '">', name_en, '</option>') AS select_html FROM countries`
+1. Pour avoir la liste d'options en plusieurs langues, je procède de la manière suivante:
+
+   ```
+   Un bouton qui changera une variable dans la requête.
+
+   Donc exemple :
+
+   Le bouton changera la variable lang dans la requête : '<option value="', iso2, '">', lang, '</option>') AS select_html FROM countries
+
+   le bouton FR sera égal à name_fr et le bouton EN sera égal à name_en
+   ```
 
 ### Jointure
 
 1. Avec cette requête:  
-    `SELECT XXX FROM XXX`  
-   je sais que `NUMBER` personnes habitent en Suisse.
+    `SELECT COUNT(*) FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries as c ON c_p.idcountry = c.id WHERE c.iso2 = 'CH'`  
+   je sais que `370` personnes habitent en Suisse.
 1. Avec cette requête:  
-    `SELECT XXX FROM XXX`  
-   je sais que `NUMBER` personnes n'habitent pas en Suisse.
+    `SELECT COUNT(*) FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries as c ON c_p.idcountry = c.id WHERE c.iso2 != 'CH'`  
+   je sais que `43` personnes n'habitent pas en Suisse.
 1. Avec cette requête:  
-    `SELECT XXX FROM XXX`  
+    `SELECT * FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries as c ON c_p.idcountry = c.id WHERE c.name_en = 'France' OR c.name_en = 'Germany' OR c.name_en = 'Italy' OR c.name_en = 'Austria'`  
    je liste (nom & prénom) des membres habitants de France, Allemagne, Italie, Autriche
    et Lischenchtein.
 1. Cette requête:  
