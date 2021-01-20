@@ -147,11 +147,26 @@ WHERE TIMESTAMPDIFF(YEAR, birthdate, NOW())>18 AND TIMESTAMPDIFF(YEAR, birthdate
 
 1. J'ai créé une vue bien pratique contenant toutes les infomrations utiles à
    un humain. Ma requête est:  
-   `CREATE XXX`
+    `CREATE VIEW HelloDojo AS SELECT people.id, firstname, lastname, email, birthdate, idnumber, TIMESTAMPDIFF(YEAR, birthdate, NOW()) AS age, CONCAT(firstname, " ",lastname) AS NameLastName, name_fr FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries AS c ON c_p.idcountry = c.id`
 
 ### Finances
 
-1. J'ai créé une table pour les finances. Ma requête est:  
-   `CREATE XXX`
-1. J'ai modifié la vue en y ajoutant les finances. Ma requête est:  
-   `UPDATE XXX`
+1. J'ai créé une table pour les finances. Ma requête est:
+
+   ```
+   CREATE TABLE expenses (
+    id int,
+    idperson int,
+    spent int,
+    PRIMARY KEY (`id`)
+   )
+
+   ALTER TABLE `expenses`
+      MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+   COMMIT;
+   ```
+
+1. J'ai modifié la vue en y ajoutant les finances. Ma requête est:
+   ```
+   ALTER VIEW HelloDojo AS SELECT people.id, firstname, lastname, email, birthdate, idnumber, TIMESTAMPDIFF(YEAR, birthdate, NOW()) AS age, CONCAT(firstname, " ",lastname) AS NameLastName, name_fr, (SELECT spent FROM expenses WHERE expenses.idperson = people.id) AS spent FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries AS c ON c_p.idcountry = c.id
+   ```
