@@ -118,30 +118,30 @@ WHERE TIMESTAMPDIFF(YEAR, birthdate, NOW())>18 AND TIMESTAMPDIFF(YEAR, birthdate
    je liste (nom & prénom) des membres habitants de France, Allemagne, Italie, Autriche
    et Lischenchtein.
 1. Cette requête:  
-    `SELECT XXX FROM XXX`  
+    `SELECT name_en, COUNT(*) FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries as c ON c_p.idcountry = c.id GROUP BY name_en`  
    permet de compter combien il y a de personnes par pays.
 1. Cette requête:  
-    `SELECT XXX FROM XXX`  
+    `SELECT COUNT(*) FROM countries WHERE NOT EXISTS (SELECT * FROM countries_people WHERE countries_people.idcountry = countries.id)`  
    liste les pays qui ne possèdent pas de personnes.
 1. En exécutant cette requête:  
-    `SELECT XXX FROM XXX`  
-   je sais que `NAME`, `NAME` et `NAME` sont liés à plusieurs pays.
+    `SELECT * FROM people WHERE (SELECT COUNT(*) FROM countries_people WHERE countries_people.idperson = people.id) > 1`  
+   je sais que `Dai Roth` et `Minerva Chaney` sont liés à plusieurs pays.
 1. En exécutant cette requête:  
-    `SELECT XXX FROM XXX`  
-   je sais que `NAME` est lié à un pays qui n'existe pas dans la base.
+    `SELECT * FROM countries_people JOIN people ON idperson = id WHERE NOT EXISTS (SELECT * FROM countries WHERE countries.id = countries_people.idcountry)`  
+   je sais que `Shellie Peterson` est lié à un pays qui n'existe pas dans la base.
 1. De la manière suivante:  
-    `SQL`  
+    `SELECT name_en, (COUNT(*) * 100 / (SELECT COUNT(*) from people)) AS Percentage FROM people JOIN countries_people AS c_p ON c_p.idperson = people.id JOIN countries as c ON c_p.idcountry = c.id GROUP BY name_en`  
    nous pouvons afficher le pourcentages de personnes par pays.
 
 ### Procédures
 
 1. Cette requête permet d'extraire `tld` de l'adresse email et de le lier à la
    table `countries`:  
-    `SELECT XXX FROM XXX`
+    `SELECT email, name_en FROM people JOIN countries as c ON email LIKE CONCAT("%", c.tld)`
 1. Pour ajouter une chaine si la jointure ne retourne rien, j'ai procédé de la
    manière suivante:  
     `STRING`
-1. Avec `STRING`, nous pouvons partager le mécanisme qui extrait le `tld`.
+1. Avec `SELECT * FROM people JOIN countries as c ON email LIKE CONCAT("%", c.tld)`, nous pouvons partager le mécanisme qui extrait le `tld`.
 
 ### Vue
 
